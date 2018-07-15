@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Virtual DOM</title>
+</head>
+<body>
+  <script src="dist/bundles/bundle.js"></script>
+  <script>
+      // Experiment with VirtualDOM object
+      const initialView = VirtualDOM.div({}, [ 'Hello World' ])
+      const schedule = VirtualDOM.scene(initialView, document.body)
+      let index = 0
+      function changeView() {
+          document.removeEventListener('click', changeView)
+
+          let newView
+
+          switch (index) {
+              case 0:
+                  newView = VirtualDOM.div({ id: 'one' }, [
+                      'Hello Virtual DOM 1',
+                  ])
+                  index += 1
+                  break
+              case 1:
+                  newView = VirtualDOM.div({ id: 'two' }, [
+                      'Hello Virtual DOM 2',
+                      VirtualDOM.ul({}, [
+                          VirtualDOM.li({}, [ 'Item one' ])
+                      ])
+                  ])
+                  index += 1
+                  break
+              case 2:
+                  newView = VirtualDOM.div({ id: 'two' }, [
+                      'Hello Virtual DOM 3',
+                      VirtualDOM.ul({}, [
+                          VirtualDOM.li({}, [ 'Item one' ]),
+                          VirtualDOM.li({}, [ 'Item two' ])
+                      ])
+                  ])
+                  index +=1
+                  break
+              case 3:
+                  newView = VirtualDOM.div({ id: 'two' }, [
+                      'Hello Virtual DOM 4',
+                      VirtualDOM.ul({}, [
+                          VirtualDOM.li({}, [ 'Item one' ]),
+                          VirtualDOM.li({}, [ 'Item two' ]),
+                          VirtualDOM.li({}, [ 'Item three' ])
+                      ])
+                  ])
+                  index = 0
+                  break
+          }
+
+          schedule(newView)
+
+          setTimeout(changeView, 3000)
+      }
+
+      document.addEventListener('click', changeView)
+  </script>
+</body>
+</html>

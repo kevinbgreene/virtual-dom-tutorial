@@ -10,8 +10,9 @@
     "clean": "rm -rf dist",
     "clean-all": "npm run clean; rm -rf node_modules",
     "lint": "tslint --fix './src/**/*.ts'",
-    "prebuild": "npm run clean",
-    "build": "tsc",
+    "webpack": "webpack",
+    "prebuild": "npm run clean && npm run lint",
+    "build": "tsc && npm run webpack",
     "pretest": "npm run build",
     "test": "node dist/tests/index.spec.js"
   },
@@ -28,7 +29,10 @@
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "chai": "^4.1.2",
+    "rimraf": "^2.6.2",
     "tslint": "^5.10.0",
-    "typescript": "^2.9.2"
+    "typescript": "^2.9.2",
+    "webpack": "^4.16.0",
+    "webpack-cli": "^3.0.8"
   }
 }
