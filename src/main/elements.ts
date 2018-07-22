@@ -25,12 +25,16 @@ export const node = (
 
 export const makeNode =
     (tagName: string) =>
-        (attributes: IAttributes = {}, children: Array<Html>): INode =>
+        (attributes: IAttributes = {}, children: Array<Html | string>): INode =>
             node(tagName, attributes, children)
 
 export const div = makeNode('div')
 export const article = makeNode('article')
 export const section = makeNode('section')
+export const p = makeNode('p')
+
+export const input = makeNode('input')
+export const textarea = makeNode('textarea')
 
 export const h1 = makeNode('h1')
 export const h2 = makeNode('h2')

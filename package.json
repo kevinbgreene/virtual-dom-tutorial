@@ -7,14 +7,19 @@
     "dist/main"
   ],
   "scripts": {
-    "clean": "rm -rf dist",
-    "clean-all": "npm run clean; rm -rf node_modules",
+    "clean": "rimraf dist",
+    "clean-all": "npm run clean && rimraf node_modules",
     "lint": "tslint --fix './src/**/*.ts'",
     "webpack": "webpack",
     "prebuild": "npm run clean && npm run lint",
     "build": "tsc && npm run webpack",
     "pretest": "npm run build",
-    "test": "node dist/tests/index.spec.js"
+    "build:test": "webpack --config webpack.test.config.js",
+    "test": "npm run test:unit && npm run test:integration",
+    "pretest:unit": "npm run build",
+    "test:unit": "mocha dist/tests/unit/**/*.spec.js",
+    "pretest:integration": "npm run build:test",
+    "test:integration": "karma start"
   },
   "repository": {
     "type": "git",
@@ -28,7 +33,13 @@
   "homepage": "https://github.com/kevinbgreene/virtual-dom-tutorial#readme",
   "devDependencies": {
     "@types/chai": "^4.1.4",
+    "@types/mocha": "^5.2.5",
     "chai": "^4.1.2",
+    "karma": "^2.0.4",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "mocha": "^5.2.0",
+    "puppeteer": "^1.6.0",
     "rimraf": "^2.6.2",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2",

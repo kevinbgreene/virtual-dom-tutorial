@@ -33,30 +33,30 @@ export const enum PatchType {
 export interface IAppendPatch {
     type: PatchType.APPEND
     node: Html
-    domNode: Node
+    domNode?: Node
 }
 
 export interface IReplacePatch {
     type: PatchType.REPLACE
     node: Html
-    domNode: Node
+    domNode?: Node
 }
 
 export interface IRemovePatch {
     type: PatchType.REMOVE
-    domNode: Node
+    domNode?: Node
 }
 
 export interface IPropsPatch {
     type: PatchType.PROPS
     attributes: IAttributes
-    domNode: Node
+    domNode?: Node
 }
 
 export interface ITextPatch {
     type: PatchType.TEXT
     value: string
-    domNode: Node
+    domNode?: Node
 }
 
 export type Patch =
