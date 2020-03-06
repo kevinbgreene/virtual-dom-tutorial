@@ -1,10 +1,7 @@
-export function replaceElement(
-    replacement: Node,
-    toReplace: Node,
-): void {
-    const parentNode: Node | null = toReplace.parentNode
+export function replaceElement(replacement: Node, toReplace: Node): void {
+  const parentNode: Node | null = toReplace.parentNode
 
-    if (parentNode !== null) {
-        parentNode.replaceChild(replacement, toReplace)
-    }
+  if (parentNode !== null) {
+    parentNode.replaceChild(replacement, toReplace)
+  }
 }

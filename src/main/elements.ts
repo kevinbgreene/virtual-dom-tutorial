@@ -1,32 +1,33 @@
 import { Html, IAttributes, INode, IText, NodeType } from './types'
 
-export const text =
-    (val: string): IText => ({
-        type: NodeType.TEXT,
-        value: val,
-    })
-
-export const node = (
-    tagName: string,
-    attributes: IAttributes = {},
-    children: Array<Html | string> = [],
-): INode => ({
-    type: NodeType.NODE,
-    tagName,
-    attributes,
-    children: children.map((next: Html | string): Html => {
-        if (typeof next === 'string') {
-            return text(next)
-        } else {
-            return next
-        }
-    }),
+export const text = (val: string): IText => ({
+  type: NodeType.TEXT,
+  value: val,
 })
 
-export const makeNode =
-    (tagName: string) =>
-        (attributes: IAttributes = {}, children: Array<Html | string>): INode =>
-            node(tagName, attributes, children)
+export const node = (
+  tagName: string,
+  attributes: IAttributes = {},
+  children: Array<Html | string> = [],
+): INode => ({
+  type: NodeType.NODE,
+  tagName,
+  attributes,
+  children: children.map(
+    (next: Html | string): Html => {
+      if (typeof next === 'string') {
+        return text(next)
+      } else {
+        return next
+      }
+    },
+  ),
+})
+
+export const makeNode = (tagName: string) => (
+  attributes: IAttributes = {},
+  children: Array<Html | string>,
+): INode => node(tagName, attributes, children)
 
 export const div = makeNode('div')
 export const article = makeNode('article')

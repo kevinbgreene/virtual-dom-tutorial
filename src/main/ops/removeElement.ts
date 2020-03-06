@@ -1,7 +1,7 @@
 export function removeElement(node: Node): void {
-    const parentNode: Node | null = node.parentNode
+  const parentNode: Node | null = node.parentNode
 
-    if (parentNode !== null) {
-        parentNode.removeChild(node)
-    }
+  if (parentNode !== null) {
+    parentNode.removeChild(node)
+  }
 }
