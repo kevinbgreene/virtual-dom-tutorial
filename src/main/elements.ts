@@ -1,18 +1,40 @@
-import { Html, IAttributes, INode, IText, NodeType } from './types'
+import { Html, INode, IText, NodeType } from './types'
+import { Attributes, AttributeMap } from './attributes'
+import { AttrType } from './attributes/types'
 
 export const text = (val: string): IText => ({
   type: NodeType.TEXT,
   value: val,
 })
 
+function processAttributes(attributes: Attributes): AttributeMap {
+  const attrs: AttributeMap = {}
+  for (const attribute of attributes) {
+    switch (attribute.type) {
+      case AttrType.ATTRIBUTE:
+        attrs[`attr-${attribute.name}`] = attribute
+        break
+
+      case AttrType.PROPERTY:
+        attrs[`prop-${attribute.name}`] = attribute
+        break
+
+      default:
+        const _exhaustiveCheck: never = attribute
+        throw new Error(`Unknown attribute type ${_exhaustiveCheck}`)
+    }
+  }
+  return attrs
+}
+
 export const node = (
   tagName: string,
-  attributes: IAttributes = {},
+  attributes: Attributes = [],
   children: Array<Html | string> = [],
 ): INode => ({
   type: NodeType.NODE,
   tagName,
-  attributes,
+  attributes: processAttributes(attributes),
   children: children.map(
     (next: Html | string): Html => {
       if (typeof next === 'string') {
@@ -25,7 +47,7 @@ export const node = (
 })
 
 export const makeNode = (tagName: string) => (
-  attributes: IAttributes = {},
+  attributes: Attributes = [],
   children: Array<Html | string>,
 ): INode => node(tagName, attributes, children)
 

@@ -6,9 +6,7 @@ function createText(node: IText): Text {
 }
 
 function createElement(node: INode, nodeCache: NodeCache): HTMLElement {
-  const element: HTMLElement = document.createElement(
-    node.tagName,
-  ) as HTMLElement
+  const element: HTMLElement = document.createElement(node.tagName)
   const children: Array<Html> = node.children
   const len: number = children.length
 
@@ -22,7 +20,7 @@ function createElement(node: INode, nodeCache: NodeCache): HTMLElement {
   return element
 }
 
-export function render(node: Html, nodeCache: NodeCache): Node {
+export function render(node: Html, nodeCache: NodeCache): HTMLElement | Text {
   switch (node.type) {
     case NodeType.NODE:
       const element: HTMLElement = createElement(node, nodeCache)

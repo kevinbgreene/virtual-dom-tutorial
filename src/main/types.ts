@@ -1,16 +1,16 @@
+import { AttributeMap } from './attributes'
+
+export { Attribute, Attributes } from './attributes'
+
 export const enum NodeType {
   NODE,
   TEXT,
 }
 
-export interface IAttributes {
-  [name: string]: string | undefined
-}
-
 export interface INode {
   type: NodeType.NODE
   tagName: string
-  attributes: IAttributes
+  attributes: AttributeMap
   children: Array<Html>
 }
 
@@ -48,7 +48,7 @@ export interface IRemovePatch {
 
 export interface IPropsPatch {
   type: PatchType.PROPS
-  attributes: IAttributes
+  attributes: AttributeMap
   domNode?: Node
 }
 

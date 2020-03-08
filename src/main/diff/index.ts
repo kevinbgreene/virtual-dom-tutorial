@@ -1,6 +1,5 @@
 import {
   Html,
-  IAttributes,
   INode,
   IText,
   NodeCache,
@@ -8,6 +7,8 @@ import {
   Patch,
   PatchType,
 } from '../types'
+
+import { AttributeMap } from '../attributes'
 
 import { diffAttrs } from './diffAttrs'
 
@@ -92,7 +93,7 @@ function runDiff(
               domNode,
             })
           } else {
-            const propsDiff: IAttributes | undefined = diffAttrs(
+            const propsDiff: AttributeMap | undefined = diffAttrs(
               oldNode.attributes,
               (newNode as INode).attributes,
             )
