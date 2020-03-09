@@ -1,10 +1,17 @@
-import { AttributeMap, Attribute } from '../attributes'
+import {
+  AttributeMap,
+  Attribute,
+  IAttribute,
+  IClassAttribute,
+  ClassMap,
+} from '../attributes'
 import { AttrType } from '../attributes'
+import { IProperty } from '../attributes/props'
 
 function diffAttribute(
-  oldAttr: Attribute,
-  newAttr: Attribute | undefined,
-): Attribute | undefined {
+  oldAttr: IAttribute | IProperty,
+  newAttr: IAttribute | IProperty | undefined,
+): IAttribute | IProperty | undefined {
   if (newAttr === undefined) {
     return {
       type: oldAttr.type,
@@ -12,11 +19,53 @@ function diffAttribute(
       value: undefined,
     }
   } else if (oldAttr.value !== newAttr.value) {
-    return {
-      type: oldAttr.type,
-      name: newAttr.name,
-      value: newAttr.value,
+    return newAttr
+  }
+}
+
+function diffClasses(
+  oldClass: IClassAttribute,
+  newClass: IClassAttribute | undefined,
+): IClassAttribute | undefined {
+  let _diff: IClassAttribute | undefined = undefined
+
+  if (newClass === undefined) {
+    _diff = {
+      type: AttrType.CLASS_MAP,
+      value: {},
     }
+
+    const classMap: ClassMap = oldClass.value
+
+    for (const key in classMap) {
+      if (classMap[key] === true) {
+        _diff.value[key] = false
+      }
+    }
+
+    return _diff
+  } else {
+    const oldClasses: ClassMap = oldClass.value
+    const newClasses: ClassMap = newClass.value
+
+    for (const key in oldClasses) {
+      const oldValue = oldClasses[key]
+      const newValue = newClasses[key]
+
+      if (oldValue !== newValue) {
+        _diff = _diff ?? { type: AttrType.CLASS_MAP, value: {} }
+        _diff.value[key] = newValue
+      }
+    }
+
+    for (const key in newClasses) {
+      if (oldClasses[key] === undefined) {
+        _diff = _diff ?? { type: AttrType.CLASS_MAP, value: {} }
+        _diff.value[key] = newClasses[key]
+      }
+    }
+
+    return _diff
   }
 }
 
@@ -33,12 +82,33 @@ export function diffAttrs(
     switch (oldAttr.type) {
       case AttrType.ATTRIBUTE:
       case AttrType.PROPERTY:
-        const attrDiff = diffAttribute(oldAttr, newAttr)
-        if (attrDiff !== undefined) {
-          _diff = _diff || {}
-          _diff[key] = attrDiff
+        if (newAttr === undefined || oldAttr.type === newAttr.type) {
+          const attrDiff = diffAttribute(oldAttr, newAttr)
+          if (attrDiff !== undefined) {
+            _diff = _diff || {}
+            _diff[key] = attrDiff
+          }
+        } else {
+          throw new Error(
+            `Type of new prop ${newAttr.type} does not match old prop ${oldAttr.type}`,
+          )
         }
         break
+
+      case AttrType.CLASS_MAP:
+        if (newAttr === undefined || oldAttr.type === newAttr.type) {
+          const classDiff = diffClasses(oldAttr, newAttr)
+          if (classDiff !== undefined) {
+            _diff = _diff || {}
+            _diff[key] = classDiff
+          }
+        } else {
+          throw new Error(
+            `Type of new prop ${newAttr.type} does not match old prop ${oldAttr.type}`,
+          )
+        }
+        break
+
       default:
         const _exhaustiveCheck: never = oldAttr
         throw new Error(`Unknown attribute type ${_exhaustiveCheck}`)

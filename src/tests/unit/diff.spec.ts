@@ -55,10 +55,11 @@ describe('diff', () => {
       {
         type: PatchType.PROPS,
         attributes: {
-          'attr-class': {
-            type: AttrType.ATTRIBUTE,
-            name: 'class',
-            value: undefined,
+          classMap: {
+            type: AttrType.CLASS_MAP,
+            value: {
+              what: false,
+            },
           },
         },
         domNode: FAKE_NODE,

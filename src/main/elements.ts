@@ -19,6 +19,14 @@ function processAttributes(attributes: Attributes): AttributeMap {
         attrs[`prop-${attribute.name}`] = attribute
         break
 
+      case AttrType.CLASS_MAP:
+        if (attrs['classMap'] !== undefined) {
+          attrs['classMap'] = Object.assign({}, attrs['classMap'], attribute)
+        } else {
+          attrs[`classMap`] = attribute
+        }
+        break
+
       default:
         const _exhaustiveCheck: never = attribute
         throw new Error(`Unknown attribute type ${_exhaustiveCheck}`)

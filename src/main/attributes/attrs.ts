@@ -14,12 +14,10 @@ export function attr(name: string, value: string | boolean): IAttribute {
   }
 }
 
-type AttributeFactory = (value: string | boolean) => IAttribute
-
-function makeAttr(name: string): AttributeFactory {
-  return (value: string | boolean) => attr(name, value)
+export function id(value: string): IAttribute {
+  return attr('id', value)
 }
 
-export const id = makeAttr('id')
-export const name = makeAttr('name')
-export const className = makeAttr('class')
+export function name(value: string): IAttribute {
+  return attr('name', value)
+}
